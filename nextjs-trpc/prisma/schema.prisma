@@ -8,16 +8,85 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+model User {
+  id  String @id @default(uuid())
+  username  String @unique
+  password  String
+  favourites Favourite[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
-model Post {
-  id    String @id @default(uuid())
-  title String
-  text  String
+model Store {
+  id  String @id @default(uuid())
+  name  String
+  desc  String
+  ratingCount Int
+  rating Float
+  minPrice Decimal
+  maxPrice Decimal
+  featured Feature?
+  images Image[]
+  favourites Favourite[]
+  storeCategoryId String
+  storeCategory StoreCategory @relation(fields: [storeCategoryId], references: [id])
+  cityId String
+  city City @relation(fields: [cityId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
 
-  // To return `Date`s intact through the API we use transformers
-  // https://trpc.io/docs/v11/data-transformers
-  // This is unique so it can be used for cursor-based pagination
+model StoreCategory {
+  id  String @id @default(uuid())
+  name String
+  displayText String
+  stores  Store[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model City {
+  id  String @id @default(uuid())
+  name String
+  stores  Store[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum ImageType {
+  COVER
+  SUB
+  THUMBNAIL
+}
+
+model Image {
+  id  String @id @default(uuid())
+  url String
+  imageType ImageType
+  storeId String
+  store  Store @relation(fields: [storeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Feature {
+  id  String @id @default(uuid())
+  text String
+  icon String
+  storeId String @unique
+  store  Store @relation(fields: [storeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Favourite {
+  id  String @id @default(uuid())
+  userId  String
+  user User @relation(fields: [userId], references: [id])
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }

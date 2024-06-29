@@ -1,29 +1,43 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type * as trpcNext from '@trpc/server/adapters/next';
+import { cookies } from 'next/headers';
+import jwt from "jsonwebtoken";
+import { prisma } from './libs/database';
+import { User } from '@prisma/client';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface CreateContextOptions {
-  // session: Session | null
-}
+export const deserializeUser = async (): Promise<Partial<User> | undefined> => {
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value
+  if (!token) {
+    return;
+  }
+  const secret = process.env.JWT_SECRET!;
+  const decoded = jwt.verify(token, secret) as { sub: string };
+  if (!decoded) {
+    return;
+  }
+  const user = await prisma.user.findUnique({ where: { id: decoded.sub } });
+  if (!user) {
+    return;
+  }
+  const { password, createdAt, updatedAt, ...restUser } = user;
+  return restUser;
+};
 
-/**
- * Inner function for `createContext` where we create the context.
- * This is useful for testing when we don't want to mock Next.js' request/response
- */
-export async function createContextInner(_opts: CreateContextOptions) {
-  return {};
+export async function createContextInner(_opts: trpcNext.CreateNextContextOptions) {
+  async function getUserFromHeader() {
+    const user = await deserializeUser();
+    return user;
+  }
+  const user = await getUserFromHeader();
+  return {
+    user,
+  };
 }
 
 export type Context = Awaited<ReturnType<typeof createContextInner>>;
 
-/**
- * Creates context for an incoming request
- * @link https://trpc.io/docs/v11/context
- */
 export async function createContext(
   opts: trpcNext.CreateNextContextOptions,
 ): Promise<Context> {
-  // for API-response caching see https://trpc.io/docs/v11/caching
-
-  return await createContextInner({});
+  return await createContextInner(opts);
 }

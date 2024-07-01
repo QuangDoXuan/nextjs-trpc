@@ -43,6 +43,9 @@ export class StoreRepository {
           }
         }
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
       ...paginationParams(input)
     });
   }

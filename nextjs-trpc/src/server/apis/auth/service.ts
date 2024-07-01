@@ -3,7 +3,6 @@ import { RegisterUserParams, UserLoginParams } from "./interface";
 import { AuthRepository } from "./repository";
 import bcrypt from "bcrypt";
 import { apiErrorMessages } from "~/server/libs/constants/message";
-import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
 export class AuthService {
@@ -30,14 +29,6 @@ export class AuthService {
     const accessToken = jwt.sign({ sub: user.id }, secret, {
       expiresIn: 60 * 60,
     });
-
-    const cookieOptions = {
-      httpOnly: true,
-      path: '/',
-      secure: process.env.NODE_ENV !== 'development',
-      maxAge: 60 * 60,
-    };
-    cookies().set(process.env.ACCESS_TOKEN_KEY!, accessToken, cookieOptions);
 
     return {
       accessToken,

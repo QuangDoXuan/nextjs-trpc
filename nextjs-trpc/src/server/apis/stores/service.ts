@@ -7,9 +7,16 @@ export class StoreService {
   ){}
 
   async getRestaurants(userId: string, input: GetListPostParams) {
+    const { limit, cursor } = input;
     const items = await this.storeRepository.getAll(userId, input);
+    let nextCursor: typeof cursor| undefined = undefined;
+    if (items.length > limit) {
+      const nextItem = items.pop()!;
+      nextCursor = nextItem.id;
+    }
     return {
-      items: items.reverse(),
+      items: items,
+      nextCursor,
     };
   }
 

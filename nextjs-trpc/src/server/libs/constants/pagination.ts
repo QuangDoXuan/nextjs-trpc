@@ -1,11 +1,10 @@
 export const paginationDefaultSetting = {
-  page: 1,
-  pageSize: 10
+  limit: 1,
 }
 
-export const paginationParams = ({ page, pageSize }: { page: number, pageSize: number}) => {
+export const paginationParams = ({ limit, cursor }: { limit: number, cursor?: string | null | undefined }) => {
   return {
-    skip: (page - 1) * pageSize,
-    take: pageSize
+    take: limit + 1,
+    cursor: cursor ? { id: cursor } : undefined
   }
 }

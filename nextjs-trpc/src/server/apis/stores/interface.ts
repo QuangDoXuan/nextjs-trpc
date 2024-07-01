@@ -1,6 +1,6 @@
 export interface GetListBaseParams {
-  page: number;
-  pageSize: number;
+  limit: number,
+  cursor?: string | null | undefined,
 }
 
 export interface AddFavouriteParams {

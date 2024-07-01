@@ -8,7 +8,9 @@ export const storeRouter = router({
   list: protectedProcedure
     .input(getStoresValidatorSchema)
     .query(async ({ input, ctx }) => storeController.getRestaurants(ctx, input)),
-
+  // byId: protectedProcedure
+  //   .input(getStoreByIdValidatorSchema)
+  //   .query
   // byId: publicProcedure
   //   .input(
   //     z.object({

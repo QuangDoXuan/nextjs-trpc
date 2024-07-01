@@ -1,12 +1,10 @@
 import type * as trpcNext from '@trpc/server/adapters/next';
-import { cookies } from 'next/headers';
 import jwt from "jsonwebtoken";
 import { prisma } from './libs/database';
 import { User } from '@prisma/client';
 
-export const deserializeUser = async (): Promise<Partial<User> | undefined> => {
-  const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value
+export const deserializeUser = async (req: trpcNext.NextApiRequest): Promise<Partial<User> | undefined> => {
+  const token = req?.headers?.authorization || ''
   if (!token) {
     return;
   }
@@ -24,8 +22,9 @@ export const deserializeUser = async (): Promise<Partial<User> | undefined> => {
 };
 
 export async function createContextInner(_opts: trpcNext.CreateNextContextOptions) {
+  const { req, res } = _opts
   async function getUserFromHeader() {
-    const user = await deserializeUser();
+    const user = await deserializeUser(req);
     return user;
   }
   const user = await getUserFromHeader();

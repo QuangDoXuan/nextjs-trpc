@@ -1,14 +1,18 @@
 import { router, publicProcedure } from '../../trpc';
 import { StoreController } from '../stores/controller';
 import { AuthController } from './controller';
-import { registerUserValidatorSchema } from './validator';
+import { registerUserValidatorSchema, userLoginValidatorSchema } from './validator';
 
 const authController = new AuthController();
 
 export const authRouter = router({
-  list: publicProcedure
+  register: publicProcedure
     .input(registerUserValidatorSchema)
-    .query(async ({ input }) => authController.register(input)),
+    .mutation(async ({ input }) => authController.register(input)),
+
+  login: publicProcedure
+    .input(userLoginValidatorSchema)
+    .mutation(async ({ input }) => authController.login(input)),
 
   // byId: publicProcedure
   //   .input(

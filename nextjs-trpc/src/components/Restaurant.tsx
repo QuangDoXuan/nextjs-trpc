@@ -1,25 +1,12 @@
+import { Image } from "@prisma/client";
 import React, { useState } from "react"
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { trpc } from "~/utils/trpc";
 
-export interface IRestaurant {
-  id: string;
-  name: string;
-  desc: string;
-  images: string[];
-  city: string;
-  maxPrice: number;
-  minPrice: number;
-  rating: number;
-  ratingCount: number;
-  rating_count: number;
-  isFavorite: boolean
-}
-
-const Restaurant = (props: { restaurant: IRestaurant }) => {
-  const { restaurant } = props
-  const [isFavorite, setIsFavorite] = useState(props?.restaurant?.isFavorite || false);
+const Restaurant = (props: { restaurant: any  }) => {
+  const { restaurant }  = props
+  const [isFavorite, setIsFavorite] = useState(restaurant?.isFavorite || false);
   const mutation = trpc.store.addFavorite.useMutation({
     onSuccess: (res) => {
       console.log("success", res)
@@ -34,7 +21,6 @@ const Restaurant = (props: { restaurant: IRestaurant }) => {
   }
   return (
   <div
-    key={restaurant.id}
     className="bg-white p-4 rounded-lg shadow-lg relative cursor-pointer transform transition-transform duration-300 hover:scale-105"
   >
     <Swiper
@@ -46,10 +32,10 @@ const Restaurant = (props: { restaurant: IRestaurant }) => {
       modules={[Pagination]}
       className="h-64"
     >
-      {restaurant.images.map((image, index) => (
+      {restaurant?.images?.map((image: Image, index: number) => (
         <SwiperSlide key={index}>
           <img
-            src={image}
+            src={image.url}
             alt={restaurant.name}
             className="w-full h-full object-cover rounded-lg"
           />
@@ -79,7 +65,7 @@ const Restaurant = (props: { restaurant: IRestaurant }) => {
           </clipPath>
         </defs>
       </svg>
-      <span className="ml-1">나카노시마×야키토리 상위 맛집</span>
+      <span className="ml-1">{restaurant.featured.text}</span>
     </div>
     <div className="flex justify-between items-center">
       <h2 className="font-bold text-title text-black whitespace-nowrap overflow-hidden text-ellipsis">
@@ -121,7 +107,7 @@ const Restaurant = (props: { restaurant: IRestaurant }) => {
       {restaurant.desc}
     </p>
     <p className="text-custom-gray text-subTitle">
-      {restaurant.city} · {restaurant.minPrice}~
+      {restaurant?.city?.name} · {restaurant.minPrice}~
       {restaurant.maxPrice}만원
     </p>
     <div className="bg-[#f5f2f2] flex jus items-center p-2 rounded-full absolute top-4 right-4 text-2xl border border-white">

@@ -7,4 +7,8 @@ export interface AddFavouriteParams {
   storeId: string;
 }
 
-export interface GetListPostParams extends GetListBaseParams {}
+export interface GetDetailStoreParams {
+  storeId: string;
+}
+
+export interface GetListStoreParams extends GetListBaseParams {}

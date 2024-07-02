@@ -1,5 +1,5 @@
 import { prisma } from "~/server/libs/database";
-import { AddFavouriteParams, GetListPostParams } from "./interface";
+import { GetListStoreParams } from "./interface";
 import { Prisma } from "@prisma/client";
 import { paginationParams } from "~/server/libs/constants/pagination";
 
@@ -12,7 +12,7 @@ const defaultStoreSelect = {
 } satisfies Prisma.StoreSelect;
 
 export class StoreRepository {
-  getAll(userId: string, input: GetListPostParams) {
+  getAll(userId: string, input: GetListStoreParams) {
     return prisma.store.findMany({
       relationLoadStrategy: 'join',
       select: {
@@ -20,6 +20,13 @@ export class StoreRepository {
         favourites: {
           where: {
             userId,
+          }
+        },
+        featured: {
+          select: {
+            id: true,
+            text: true,
+            icon: true
           }
         },
         storeCategory: {
@@ -48,6 +55,10 @@ export class StoreRepository {
       },
       ...paginationParams(input)
     });
+  }
+
+  getDetailStore(userId: string, id: string) {
+    return prisma.store.findFirst({ where: { id }}).favourites({ where: { userId }})
   }
 
   getUserFavourite(userId: string, storeId: string) {

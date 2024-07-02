@@ -1,4 +1,5 @@
-import { AddFavouriteParams, GetListPostParams } from "./interface";
+import { prisma } from "~/server/libs/database";
+import { AddFavouriteParams, GetListStoreParams } from "./interface";
 import { StoreRepository } from "./repository";
 
 export class StoreService {
@@ -6,7 +7,7 @@ export class StoreService {
     private readonly storeRepository = new StoreRepository()
   ){}
 
-  async getRestaurants(userId: string, input: GetListPostParams) {
+  async getRestaurants(userId: string, input: GetListStoreParams) {
     const { limit, cursor } = input;
     const items = await this.storeRepository.getAll(userId, input);
     let nextCursor: typeof cursor| undefined = undefined;
@@ -15,9 +16,14 @@ export class StoreService {
       nextCursor = nextItem.id;
     }
     return {
-      items: items,
+      items: items.map(item => ({...item, isFavorite: item.favourites.length ? true : false })),
       nextCursor,
     };
+  }
+
+  async getDetailRestaurant(userId: string, storeId: string) {
+    const store = await this.storeRepository.getDetailStore(userId, storeId)
+    return store
   }
 
   async addFavourites(userId: string, input: AddFavouriteParams) {

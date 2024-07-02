@@ -1,5 +1,5 @@
 import { ErrorHandler } from "~/server/libs/errors/error-handler";
-import { AddFavouriteParams, GetListPostParams } from "./interface";
+import { AddFavouriteParams, GetDetailStoreParams, GetListStoreParams } from "./interface";
 import { StoreService } from "./service";
 import { Context } from "~/server/context";
 
@@ -9,10 +9,20 @@ export class StoreController {
     private readonly errorHandler = new ErrorHandler()
   ) {}
 
-  async getRestaurants(context: Context, input: GetListPostParams) {
+  async getRestaurants(context: Context, input: GetListStoreParams) {
     try {
       const userId = context.user?.id!;
       const res = await this.storeService.getRestaurants(userId, input)
+      return res
+    } catch (err) {
+      this.errorHandler.handleError(err)
+    }
+  }
+
+  async getDetailRestaurant(context: Context, input: GetDetailStoreParams) {
+    try {
+      const userId = context.user?.id!;
+      const res = await this.storeService.getDetailRestaurant(userId, input.storeId)
       return res
     } catch (err) {
       this.errorHandler.handleError(err)

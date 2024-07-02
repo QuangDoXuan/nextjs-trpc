@@ -11,5 +11,5 @@ export const addFavoriteStoreSchema =  z.object({
 })
 
 export const getStoreByIdValidatorSchema =  z.object({
-  id: z.string().nullish()
+  storeId: z.string()
 })

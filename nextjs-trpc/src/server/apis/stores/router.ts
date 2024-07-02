@@ -1,6 +1,6 @@
 import { router, protectedProcedure, publicProcedure } from '../../trpc';
 import { StoreController } from '../stores/controller';
-import { addFavoriteStoreSchema, getStoresValidatorSchema } from './validator';
+import { addFavoriteStoreSchema, getStoreByIdValidatorSchema, getStoresValidatorSchema } from './validator';
 
 const storeController = new StoreController();
 
@@ -9,12 +9,14 @@ export const storeRouter = router({
     .input(getStoresValidatorSchema)
     .query(async ({ input, ctx }) => storeController.getRestaurants(ctx, input)),
 
+  byId: protectedProcedure
+      .input(getStoreByIdValidatorSchema)
+      .query(async ({ input, ctx }) => storeController.getDetailRestaurant(ctx, input)),
+
   addFavorite: publicProcedure
     .input(addFavoriteStoreSchema)
     .mutation(async ({ input, ctx }) => storeController.addFavourite(ctx, input)),
-  // byId: protectedProcedure
-  //   .input(getStoreByIdValidatorSchema)
-  //   .query
+ 
   // byId: publicProcedure
   //   .input(
   //     z.object({

@@ -6,6 +6,10 @@ export const getStoresValidatorSchema = z.object({
   cursor: z.string().nullish(),
 })
 
+export const addFavoriteStoreSchema =  z.object({
+  storeId: z.string()
+})
+
 export const getStoreByIdValidatorSchema =  z.object({
   id: z.string().nullish()
 })

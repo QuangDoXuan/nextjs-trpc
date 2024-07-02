@@ -1,13 +1,17 @@
 import { router, protectedProcedure, publicProcedure } from '../../trpc';
 import { StoreController } from '../stores/controller';
-import { getStoresValidatorSchema } from './validator';
+import { addFavoriteStoreSchema, getStoresValidatorSchema } from './validator';
 
 const storeController = new StoreController();
 
 export const storeRouter = router({
-  list: protectedProcedure
+  getRestaurants: protectedProcedure
     .input(getStoresValidatorSchema)
     .query(async ({ input, ctx }) => storeController.getRestaurants(ctx, input)),
+
+  addFavorite: publicProcedure
+    .input(addFavoriteStoreSchema)
+    .mutation(async ({ input, ctx }) => storeController.addFavourite(ctx, input)),
   // byId: protectedProcedure
   //   .input(getStoreByIdValidatorSchema)
   //   .query

@@ -1,12 +1,14 @@
 import { trpc } from "~/utils/trpc";
 import { useRouter } from 'next/router'
+import Cookies from 'universal-cookie';
 
 export default function Login() {
   const router = useRouter();
   const mutation = trpc.auth.login.useMutation({
     onSuccess: (res) => {
       if (res?.accessToken) {
-        localStorage.setItem(process.env.ACCESS_TOKEN_KEY!, res?.accessToken)
+        const cookies = new Cookies(null, { path: '/' });
+        cookies.set(process.env.ACCESS_TOKEN_KEY || "accessToken", res.accessToken);
       }
       router.push('/')
     },

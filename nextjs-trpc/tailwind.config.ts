@@ -6,7 +6,19 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        title: '16px',
+        subTitle: '14px',
+      },
+      colors: {
+        'custom-gray': '#475467',
+        'custom-black': '#344054',
+      },
+      backgroundImage: {
+        'banner': "url('/images/jason-leung-poI7DelFiVA-unsplash.jpg')",
+      }
+    },
   },
   plugins: [],
 };

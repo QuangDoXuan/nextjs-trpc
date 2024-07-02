@@ -4,7 +4,8 @@ import { prisma } from './libs/database';
 import { User } from '@prisma/client';
 
 export const deserializeUser = async (req: trpcNext.NextApiRequest): Promise<Partial<User> | undefined> => {
-  const token = req?.headers?.authorization || ''
+  const token = req?.cookies?.accessToken || ''
+  console.log(req.cookies, 'reqCookies')
   if (!token) {
     return;
   }
@@ -29,6 +30,7 @@ export async function createContextInner(_opts: trpcNext.CreateNextContextOption
   }
   const user = await getUserFromHeader();
   return {
+    ..._opts,
     user,
   };
 }

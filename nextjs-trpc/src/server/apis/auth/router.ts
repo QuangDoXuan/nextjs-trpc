@@ -12,7 +12,7 @@ export const authRouter = router({
 
   login: publicProcedure
     .input(userLoginValidatorSchema)
-    .mutation(async ({ input }) => authController.login(input)),
+    .mutation(async ({ input, ctx }) => authController.login(ctx, input)),
 
   // byId: publicProcedure
   //   .input(

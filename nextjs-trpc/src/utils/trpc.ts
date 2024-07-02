@@ -64,11 +64,11 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
         }),
         httpLink({
           url: `${getBaseUrl()}/api/trpc`,
-          headers() {
-            return {
-              Authorization: localStorage.getItem(process.env.ACCESS_TOKEN_KEY!) || '',
-            };
-          },
+          // headers() {
+          //   return {
+          //     Authorization: localStorage.getItem(process.env.ACCESS_TOKEN_KEY!) || '',
+          //   };
+          // },
           transformer,
         }),
       ],

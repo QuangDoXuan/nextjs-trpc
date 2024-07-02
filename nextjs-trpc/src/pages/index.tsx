@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
 import Head from 'next/head';
 import {
-  FaSearch,
   FaHeart,
   FaHome,
   FaList,
   FaUser,
   FaCog,
 } from 'react-icons/fa';
+import Restaurant from '~/components/Restaurant';
 
-const mockRestaurants = [
+const mockRestaurants: any = [
   {
     rating: 4.2,
     rating_count: 139,
@@ -28,6 +26,8 @@ const mockRestaurants = [
     ],
     name: '카구라자카 이시카와 스시하루 나카노시마 스시야 카구라자카 이시카와 스시하루 나카노시마 스시야',
     price_range: '3~5',
+    minPrice: 3,
+    maxPrice: 5,
     featured: {
       text: '나카노시마×야키토리 상위 맛집',
       icon: 'stars-02',
@@ -53,6 +53,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: false,
+    minPrice: 4,
+    maxPrice: 6,
   },
   {
     rating: 4.7,
@@ -73,6 +75,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: true,
+    minPrice: 2,
+    maxPrice: 4,
   },
   {
     rating: 4.3,
@@ -93,6 +97,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: false,
+    minPrice: 3,
+    maxPrice: 5,
   },
   {
     rating: 4.6,
@@ -113,6 +119,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: true,
+    minPrice: 2,
+    maxPrice: 4,
   },
   {
     rating: 4.1,
@@ -133,6 +141,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: false,
+    minPrice: 1,
+    maxPrice: 3,
   },
   {
     rating: 4.8,
@@ -153,6 +163,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: true,
+    minPrice: 4,
+    maxPrice: 6,
   },
   {
     rating: 4.4,
@@ -173,6 +185,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: false,
+    minPrice: 2,
+    maxPrice: 4,
   },
   {
     rating: 4.9,
@@ -193,6 +207,8 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: true,
+    minPrice: 5,
+    maxPrice: 7,
   },
   {
     rating: 4.0,
@@ -213,76 +229,26 @@ const mockRestaurants = [
       icon: 'stars-02',
     },
     isFavorite: false,
+    minPrice: 2,
+    maxPrice: 4,
   },
 ];
 
 const RestaurantList: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [restaurants, setRestaurants] = useState(mockRestaurants);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setRestaurants(
-      mockRestaurants.filter((restaurant) =>
-        restaurant.name.toLowerCase().includes(e.target.value.toLowerCase()),
-      ),
-    );
-  };
-
-  const toggleFavorite = (id: string) => {
-    setRestaurants(
-      restaurants.map((restaurant) =>
-        restaurant.id === id
-          ? { ...restaurant, isFavorite: !restaurant.isFavorite }
-          : restaurant,
-      ),
-    );
-  };
-
   return (
     <>
       <Head>
         <title>Restaurant List</title>
       </Head>
+      <div className="bg-banner flex w-full relative min-h-[350px] py-[50px] bg-no-repeat bg-cover bg-[#e0e0e0] box-border">
+        <div className="mb-4 flex justify-center items-center w-full"></div>
+      </div>
       <div className="min-h-screen bg-gray-100 py-8 px-4 pb-20 lg:pb-8">
         <div className="container mx-auto">
-          <div className="mb-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={handleSearch}
-              placeholder="Search restaurants..."
-              className="p-2 border border-gray-300 rounded w-full lg:w-1/2"
-            />
-          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {restaurants.map((restaurant) => (
-              <div key={restaurant.id} className="bg-white p-4 rounded-lg shadow-lg relative">
-                <Swiper pagination={{ clickable: true }} modules={[Pagination]} className="h-64">
-                  {restaurant.images.map((image, index) => (
-                    <SwiperSlide key={index}>
-                      <img
-                        src={image}
-                        alt={restaurant.name}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-                <div className="flex justify-between items-center mt-4">
-                  <h2 className="text-xl font-bold text-black">{restaurant.name}</h2>
-                  <p className="text-gray-600">Rating: {restaurant.rating} ({restaurant.rating_count} reviews)</p>
-                </div>
-                <p className="text-gray-600">Category: {restaurant.category}</p>
-                <p className="text-gray-600">City: {restaurant.city}</p>
-                <p className="text-gray-600 mt-2">{restaurant.desc}</p>
-                <FaHeart
-                  className={`absolute top-4 right-4 text-2xl cursor-pointer ${
-                    restaurant.isFavorite ? 'text-red-500' : 'text-gray-400'
-                  }`}
-                  onClick={() => toggleFavorite(restaurant.id)}
-                />
-              </div>
+            {restaurants.map((restaurant: any, index: number) => (
+              <Restaurant key={index} restaurant={restaurant} />
             ))}
           </div>
         </div>
@@ -295,7 +261,7 @@ const RestaurantList: React.FC = () => {
         </div>
       </div>
     </>
-  )
+  );
 };
 
 export default RestaurantList;

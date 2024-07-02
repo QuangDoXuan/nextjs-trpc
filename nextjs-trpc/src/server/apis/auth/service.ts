@@ -4,6 +4,7 @@ import { AuthRepository } from "./repository";
 import bcrypt from "bcrypt";
 import { apiErrorMessages } from "~/server/libs/constants/message";
 import jwt from "jsonwebtoken";
+import { Context } from "~/server/context";
 
 export class AuthService {
   constructor(
@@ -17,7 +18,7 @@ export class AuthService {
     return userWithoutPassword;
   }
 
-  async login(input: UserLoginParams) {
+  async login(ctx: Context, input: UserLoginParams) {
     const user = await this.authRepository.getUserByUserName(input.username)
     if (!user || !(await bcrypt.compare(input.password, user.password))) {
       throw new TRPCError({

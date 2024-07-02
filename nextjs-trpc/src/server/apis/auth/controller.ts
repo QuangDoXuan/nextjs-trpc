@@ -1,6 +1,7 @@
 import { AuthService } from "./service";
 import { RegisterUserParams, UserLoginParams } from "./interface";
 import { ErrorHandler } from "~/server/libs/errors/error-handler"
+import { Context } from "~/server/context";
 
 export class AuthController {
   constructor(
@@ -17,9 +18,9 @@ export class AuthController {
     }
   };
 
-  async login(input: UserLoginParams) {
+  async login(ctx: Context, input: UserLoginParams) {
     try {
-      const res = await this.authService.login(input)
+      const res = await this.authService.login(ctx, input)
       return res
     } catch (err) {
       this.errorHandler.handleError(err)

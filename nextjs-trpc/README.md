@@ -10,16 +10,20 @@
 - 🔐 Validates your env vars on build and start
 - Mobile responsive
 
-This project is a simple web application that allows users to view a list of restaurants, mark a restaurant as a favorite. User is required to login into application first. Navigate to /login path to login. The default credentials to access the application:
+Demo Video: [link](https://drive.google.com/file/d/1TwXGdLG7RXzLZAWq1sNsBRMlyYHJGgjp/view?usp=sharing)
 
-## Database Diagram
-![Example Image](https://drive.google.com/uc?id=1JqajWR-HKDL-hDeIAJ8A7Rly5runebQF)
+This project is a simple web application that allows users to view a list of restaurants, mark a restaurant as a favorite. User is required to login into application first. Navigate to /login path to login. The application was deployed to Vercel, follow this url to access my application:
 
-## Default user
+https://nextjs-trpc-beta.vercel.app/login
+
+## Default credentials
 ```
   username: admin
   password: 123
 ```
+
+## Database Diagram
+![Example Image](https://drive.google.com/uc?id=1JqajWR-HKDL-hDeIAJ8A7Rly5runebQF)
 
 ## Setup & start
 

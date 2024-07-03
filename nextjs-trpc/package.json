@@ -13,7 +13,7 @@
     "dx": "run-p dx:* --print-label",
     "dev": "pnpm dx:next",
     "prebuild": "run-s generate migrate",
-    "build": "next build",
+    "build": "run-s migrate-dev db-seed && next build",
     "start": "next start",
     "lint": "eslint --cache --ext \".js,.ts,.tsx\" src",
     "lint-fix": "pnpm lint --fix",

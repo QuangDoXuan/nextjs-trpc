@@ -259,7 +259,22 @@ const textByStoreCategory = {
   [STORE_CATEGORY.OTHER]: '기타 일본 음식',
 };
 
-async function main() {
+const createDefaultUser = async () => {
+  const userId = "14f4f677-18a6-43ef-98ef-ebf207da1dde"
+  await prisma.user.upsert({
+    where: {
+      id: userId,
+    },
+    create: {
+      id: userId,
+      username: 'admin',
+      password: await bcrypt.hash("123", 12),
+    },
+    update: {},
+  });
+}
+
+const createDefaultRestaurants = async () => {
   for (const restaurant of restaurants) {
     const category = await prisma.storeCategory.upsert({
       where: { 
@@ -280,8 +295,10 @@ async function main() {
       },
     });
 
-    const store = await prisma.store.create({
-      data: {
+    const store = await prisma.store.upsert({
+      where: { id: restaurant.id },
+      update: {},
+      create: {
         id: restaurant.id,
         name: restaurant.name,
         desc: restaurant.desc,
@@ -314,9 +331,48 @@ async function main() {
         } : undefined,
       },
     });
+    // const store = await prisma.store.create({
+    //   data: {
+    //     id: restaurant.id,
+    //     name: restaurant.name,
+    //     desc: restaurant.desc,
+    //     rating: restaurant.rating,
+    //     ratingCount: restaurant.rating_count,
+    //     minPrice: parseInt(restaurant.price_range.split('~')[0] || ''),
+    //     maxPrice: parseInt(restaurant.price_range.split('~')[1] || ''),
+    //     storeCategory: {
+    //       connect: { id: category.id }
+    //     },
+    //     city: {
+    //       connect: { id: city.id }
+    //     },
+    //     featured: restaurant.featured ? {
+    //       create: {
+    //         text: restaurant.featured.text,
+    //         icon: restaurant.featured.icon,
+    //       }
+    //     } : undefined,
+    //     images: {
+    //       create: restaurant.images.map((url) => ({
+    //         url,
+    //         imageType: "COVER" // or any other type you want to set
+    //       }))
+    //     },
+    //     favourites: restaurant.isFavorite ? {
+    //       create: {
+    //         userId: "14f4f677-18a6-43ef-98ef-ebf207da1dde" // Replace with a real user ID or handle this dynamically
+    //       }
+    //     } : undefined,
+    //   },
+    // });
 
     console.log(`Created store with id: ${store.id}`);
   }
+}
+
+async function main() {
+  await createDefaultUser();
+  await createDefaultRestaurants();
 }
 
 main()

@@ -12,6 +12,10 @@ import {
 import Restaurant from '~/components/Restaurant';
 import { RouterOutput, trpc } from '~/utils/trpc';
 
+interface ListRestaurants {
+  restaurant: RouterOutput['store']['getRestaurants'];
+}
+
 const RestaurantList: React.FC = () => {
   const postsQuery = trpc.store.getRestaurants.useInfiniteQuery(
     {
@@ -36,8 +40,8 @@ const RestaurantList: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {postsQuery.data?.pages.map((page, index: number) => (
               <Fragment key={index}>
-                {page?.items.map((item: any, i) => (
-                  <Restaurant key={i} restaurant={item} />
+                {page?.items.map((item, i) => (
+                  <Restaurant key={i} restaurant={item as any} />
                 ))}
               </Fragment>
             ))}

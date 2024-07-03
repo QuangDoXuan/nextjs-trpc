@@ -21,9 +21,8 @@ export class StoreService {
     };
   }
 
-  async getDetailRestaurant(userId: string, storeId: string) {
-    const store = await this.storeRepository.getDetailStore(userId, storeId)
-    return store
+  getDetailRestaurant(userId: string, storeId: string) {
+    return this.storeRepository.getDetailStore(userId, storeId)
   }
 
   async addFavourites(userId: string, input: AddFavouriteParams) {

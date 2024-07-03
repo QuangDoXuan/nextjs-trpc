@@ -2,10 +2,11 @@
   "name": "examples-trpc-next-prisma-starter",
   "private": true,
   "scripts": {
-    "dev2": "next dev",
+    "start:dev": "next dev",
     "generate": "prisma generate",
     "prisma-studio": "prisma studio",
     "db-seed": "prisma db seed",
+    "db-migrate": "prisma db migrate dev",
     "db-reset": "prisma migrate dev reset",
     "dx:next": "run-s migrate-dev db-seed && next dev",
     "dx:prisma-studio": "pnpm prisma-studio",

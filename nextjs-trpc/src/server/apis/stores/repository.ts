@@ -57,8 +57,21 @@ export class StoreRepository {
     });
   }
 
-  getDetailStore(userId: string, id: string) {
-    return prisma.store.findFirst({ where: { id }}).favourites({ where: { userId }})
+  async getDetailStore(userId: string, storeId: string) {
+    return prisma.store.findFirst({
+      where: { id: storeId },
+      include: {
+        favourites: {
+          where: {
+            userId: userId,
+          },
+        },
+        featured: true,
+        images: true,
+        storeCategory: true,
+        city: true,
+      },
+    });
   }
 
   getUserFavourite(userId: string, storeId: string) {

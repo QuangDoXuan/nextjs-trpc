@@ -12,6 +12,10 @@
 
 This project is a simple web application that allows users to view a list of restaurants, mark a restaurant as a favorite. User is required to login into application first. Navigate to /login path to login. The default credentials to access the application:
 
+## Database Diagram
+![Example Image](https://drive.google.com/uc?id=1JqajWR-HKDL-hDeIAJ8A7Rly5runebQF)
+
+## Default user
 ```
   username: admin
   password: 123

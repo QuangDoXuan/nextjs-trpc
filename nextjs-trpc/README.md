@@ -1,62 +1,72 @@
-# Prisma + tRPC
+# Prisma + tRPC + Next.js
 
 ## Features
 
-- 🧙‍♂️ E2E typesafety with [tRPC](https://trpc.io)
 - ⚡ Full-stack React with Next.js
 - ⚡ Database with Prisma
-- ⚙️ VSCode extensions
+- ⚡ Authentication with JWT
 - 🎨 ESLint + Prettier
-- 💚 CI setup using GitHub Actions:
-  - ✅ E2E testing with [Playwright](https://playwright.dev/)
-  - ✅ Linting
+- 💚 Deployment with Vercel
 - 🔐 Validates your env vars on build and start
+- Mobile responsive
 
-## Setup
+This project is a simple web application that allows users to view a list of restaurants, mark a restaurant as a favorite. User is required to login into application first. Navigate to /login path to login. The default credentials to access the application:
+
+```
+  username: admin
+  password: 123
+```
+
+## Setup & start
+
+- Copy environment variables from .env.example file to .env file
+```bash
+  cd nextjs-trpc
+  cp .env.example .env
+```
+- Run commands to install dependencies, migrate database, seeding and start project.
 
 ```bash
-pnpm create next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
-cd trpc-prisma-starter
-pnpm
-pnpm dx
+npm install
+npm run dev
 ```
+The project will be started in http://localhost:3000
 
 ### Requirements
 
 - Node >= 18.0.0
-- Postgres
+- Postgres15
 
 ## Development
 
 ### Start project
 
 ```bash
-pnpm create next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
-cd trpc-prisma-starter
-pnpm
-pnpm dx
+npm run start:dev
 ```
 
 ### Commands
 
 ```bash
-pnpm build      # runs `prisma generate` + `prisma migrate` + `next build`
-pnpm db-reset   # resets local db
-pnpm dev        # starts next.js
-pnpm dx         # starts postgres db + runs migrations + seeds + starts next.js
-pnpm test-dev   # runs e2e tests on dev
-pnpm test-start # runs e2e + unit tests
-pnpm test-unit  # runs normal Vitest unit tests
-pnpm test-e2e   # runs e2e tests
+npm run build      # runs `prisma generate` + `prisma migrate` + `next build`
+npm run db-reset   # resets local db
+npm run dev        # starts next.js
+npm run dx         # starts postgres db + runs migrations + seeds + starts next.js
 ```
 
 ## Deployment
 
-### Using [Render](https://render.com/)
+### Using Vecel
+- Connect to Vercel project
+```bash
+vercel
+```
 
-The project contains a [`render.yaml`](./render.yaml) [_"Blueprint"_](https://render.com/docs/blueprint-spec) which makes the project easily deployable on [Render](https://render.com/).
-
-Go to [dashboard.render.com/blueprints](https://dashboard.render.com/blueprints) and connect to this Blueprint and see how the app and database automatically gets deployed.
+- Deploy to Vercel
+```bash
+vercel deploy      # runs a test deployment with output is a preview environment
+vercel --prod      # deploy to production
+```
 
 ## Files of note
 
@@ -73,16 +83,32 @@ Go to [dashboard.render.com/blueprints](https://dashboard.render.com/blueprints)
       <td>Prisma schema</td>
     </tr>
     <tr>
+      <td><a href="./src/pages/"><code>./src/pages/</code></a></td>
+      <td>Front-end NextJS source code</td>
+    </tr>
+    <tr>
+      <td><a href="./src/middleware.ts"><code>./src/middleware.ts</code></a></td>
+      <td>Authentication middleware</td>
+    </tr>
+    <tr>
       <td><a href="./src/pages/api/trpc/[trpc].ts"><code>./src/pages/api/trpc/[trpc].ts</code></a></td>
       <td>tRPC response handler</td>
     </tr>
     <tr>
+      <td><a href="./src/server/"><code>./src/server/</code></a></td>
+      <td>Back-end API with NextJS, TRPC source code</td>
+    </tr>
+    <tr>
       <td><a href="./src/server/routers"><code>./src/server/routers</code></a></td>
-      <td>Your app's different tRPC-routers</td>
+      <td>App's different tRPC-routers</td>
+    </tr>
+    <tr>
+      <td><a href="./src/server/apis/auth"><code>./src/server/apis/auth</code></a></td>
+      <td>App's authentication TRPC APIS</td>
+    </tr>
+    <tr>
+      <td><a href="./src/server/apis/store"><code>./src/server/apis/auth</code></a></td>
+      <td>App's store TRPC APIs (includes getRestaurants and addFavorite procedures)</td>
     </tr>
   </tbody>
 </table>
-
----
-
-Created by [@alexdotjs](https://twitter.com/alexdotjs).

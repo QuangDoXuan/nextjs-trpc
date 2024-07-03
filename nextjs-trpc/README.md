@@ -57,6 +57,11 @@ npm run dx         # starts postgres db + runs migrations + seeds + starts next.
 ## Deployment
 
 ### Using Vecel
+- Install Vercel CLI
+```bash
+npm i -g vercel
+```
+
 - Connect to Vercel project
 ```bash
 vercel
